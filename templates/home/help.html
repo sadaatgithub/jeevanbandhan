@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% block title %}Help{% endblock title %}
+{% block menu-list %}
+<ul class="menu-list">
+
+    {%if user.is_authenticated %}
+
+    <li id="bashboard-btn">Dashboard</li>
+
+    {% comment %} {% else %}
+    <li id="log-in-btn">Log In <i class="far fa-user"></i></li>
+    <li id="sign-up-btn">Sign Up</li> {% endcomment %}
+
+    {% endif %}
+    <li class="contactUs-btn"><a href="contact">Contact Us</a></li>
+    <li class="help-btn"><a href="help">Help</a></li>
+    {% comment %} <li class="help-btn"><a href="logout">logout</a></li> {% endcomment %}
+
+</ul>
+{% endblock menu-list %}
+
+
+
+{% block first-container %}
+<h1 class="help-title">Frequently Asked Questions</h1>
+<div class="faq-container">
+    <div class="faq">
+        <h3 class="faq-title">Lorem ipsum dolor sit amet, consectetur adipisicing elit.?</h3>
+        <p class="faq-text">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Beatae, veniam illum nisi earum
+            unde iusto corrupti facere neque quibusdam alias modi aperiam soluta ipsam non.</p>
+        <button class="faq-toggle">
+            <i class="fas fa-chevron-down"></i>
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div class="faq">
+        <h3 class="faq-title">Lorem ipsum dolor, sit amet consectetur adipisicing elit.?</h3>
+        <p class="faq-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Incidunt maxime non et laudantium
+            tenetur.</p>
+        <button class="faq-toggle">
+            <i class="fas fa-chevron-down"></i>
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div class="faq">
+        <h3 class="faq-title">Lorem ipsum dolor sit amet consectetur adipisicing elit. Atque, voluptatum.?</h3>
+        <p class="faq-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Id officiis enim aspernatur
+            explicabo perspiciatis hic!</p>
+        <button class="faq-toggle">
+            <i class="fas fa-chevron-down"></i>
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div class="faq">
+        <h3 class="faq-title">Lorem ipsum dolor sit amet.?</h3>
+        <p class="faq-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates eveniet sapiente rem
+            itaque placeat atque nulla. Sit magni deleniti porro!</p>
+        <button class="faq-toggle">
+            <i class="fas fa-chevron-down"></i>
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    <div class="faq">
+        <h3 class="faq-title">Lorem ipsum dolor sit amet.</h3>
+        <p class="faq-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium, eligendi!</p>
+        <button class="faq-toggle">
+            <i class="fas fa-chevron-down"></i>
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+</div>
+{% endblock first-container %}
+
+{% block second-container %}{% endblock second-container %}
+{% block third-container %}
+
+{% endblock third-container %}

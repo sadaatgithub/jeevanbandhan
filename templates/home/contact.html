@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %} Contact{% endblock title %}
+{% load static %}
+
+
+{% block menu-list %}
+                <ul class="menu-list">
+
+                    {%if user.is_authenticated %}
+             
+                    <li id="bashboard-btn">Dashboard</li>
+
+                    {% comment %} {% else %}
+                    <li id="log-in-btn">Log In <i class="far fa-user"></i></li>
+                    <li id="sign-up-btn">Sign Up</li> {% endcomment %}
+
+                    {% endif %}
+                    <li class="contactUs-btn"><a href="contact">Contact Us</a></li>
+                    <li class="help-btn"><a href="help">Help</a></li>
+                    {% comment %} <li class="help-btn"><a href="logout">logout</a></li> {% endcomment %}
+
+                </ul>
+            {% endblock menu-list %}
+
+
+  
+{% block first-container %}
+        <div class="contact-us">
+            <h2>Contact here</h2>
+            <form action="/contact" class="contact-form" method="POST">
+                {% csrf_token %}
+                {% if user.is_authenticated %}
+                        <div>
+                    <label for="name">Name</label>
+                    <input type="text" name="name" value="{{user.first_name}}" required>
+                </div>
+                 {% else %}
+                <div>
+                    <label for="name">Name</label>
+                    <input type="text" name="name" required>
+                </div>
+                {% endif %}
+                <div>
+                    <label for="email">Email</label>
+                    <input type="email" name="email" required>
+                </div>
+                <div>
+                    <label for="contact-no">Contact No</label>
+                    <input type="tel" name="contact_no" required>
+                </div>
+                <textarea placeholder="Enter Your Message Here" name="content" id="content" cols="30" rows="5"></textarea>
+          <button type="submit" class="contact-us-btn">Submit</button>
+            </form>
+        </div>
+{% endblock first-container %}
+{% block second-container %}{% endblock second-container %} 
+{% block third-container %}{% endblock third-container %}
+
+  
+
+   

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+
+{% load static %}
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+        integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+        crossorigin="anonymous" />
+
+    
+</head>
+
+<body>
+<div class="container_fluid_2">
+{% block chatbox %}
+    <div class="header-1">
+        <div class="user-dp"><img src="/media/{{other_user_dp.pro_pic}}" alt="">
+        </div>
+        <div class=""><p>{{other_user.first_name}}</p>
+            <p class="last-login">Last Login:00-00-00</p>
+        </div>
+            <i class="fas fa-times" id="chat-times" style="margin-left: auto;"></i>
+
+        </div>
+    <div class="messages-area">
+        {% for message in messages %}
+        <div class="message 
+        {% if message.sender == request.user %}right{% else %}left{% endif %}
+        ">
+            {% comment %} <div class="sent-by">{{ message.sender.username }}</div> {% endcomment %}
+            {% comment %} <div class="content"></div> {% endcomment %}
+            <div class="content">{{ message.message }}</div>
+            <div class="chat-time">10:10PM, Today</div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="input-area">
+                <div class="sender-dp"><img src="/media/{{profile.pro_pic}}" alt=""></div>
+                <input type="text" placeholder="Type a messgae here" id="message-input">
+                <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+    {% endblock chatbox %}
+</div>
+</body>
+<script>
+    let message_send_btn = document.getElementById("send-btn");
+    let message_input = document.getElementById("message-input");
+    function send_message() {
+        let message = message_input.value;
+        if (message === "") {
+            return;
+        }
+        message_input.value = "";
+        fetch("{% url 'chatroom-ajax' other_user.id %}",
+            {
+                method: "POST",
+                credentials: 'same-origin',
+                headers: {
+                    "Content-Type": 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify(message)
+            }
+        ).then(e => e.json()).then(messages => {
+            for (message of messages) {
+                construct_message(message);
+            }
+        });
+    }
+
+    function load_messages() {
+        fetch("{% url 'chatroom-ajax' other_user.id %}")
+            .then(e => e.json())
+            .then(messages => {
+                console.log(messages)
+                for (message of messages) {
+                    construct_message(message);
+                }
+            })
+    }
+
+    function construct_message(message){
+        let messages_container = document.querySelector(".messages-area");
+        let class_name = "left"
+        if (message.sent){
+            class_name = "right"
+        }
+        let div = document.createElement("div");
+        div.classList.add("message", class_name);
+        div.innerHTML = `
+        {% comment %} <div class="sent-by">${ message.sender }</div> {% endcomment %}
+            <div class="content">${ message.message }</div>
+        `
+        messages_container.appendChild(div);
+        div.scrollIntoView()
+    }
+    message_send_btn.addEventListener('click', send_message);
+    setInterval(load_messages, 2000);
+</script>
+
+
+</html>

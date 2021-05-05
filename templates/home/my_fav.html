@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block first-container%}
+<div class="fav_container">
+
+{% comment %} <div> <h3>Total Profile Matched: &nbsp;{{search2|length}}</div> {% endcomment %}
+
+
+
+
+<div class="fv_cards_container">
+{% for i in search2 %}
+   <div class="cards">
+   {% if i.pro_pic %}
+                <div class="card-img"><img src="/media/{{i.pro_pic}}" alt="">
+                </div>
+            {% else %}
+                <div class="card-img"><img src="{%static 'imgs/default.png'%}" alt="">
+                </div>
+            {% endif %}
+            <div class="card-detail">
+                <div class="cd">
+                    <i class="fas fa-ellipsis-v"></i>
+                   
+                </div>
+
+                 <div class="cd">
+                    <p>ID</p>
+                    <p>:&nbsp;  {{i.pro_Id}}</p>
+                </div>
+                <div class="cd">
+                    <p>Name</p>
+                    <p>:&nbsp;{{i.user.first_name}} {{i.user.last_name}}</p>
+                </div>
+                <div class="cd">
+                    <p>Age</p><p>:&nbsp; {{i.age}}</p>
+                </div>
+                <div class="cd">
+                    <p>Gender</p>
+                    <p>:&nbsp;{{i.gender}}</p>
+                </div>
+                <div class="cd">
+                    <p>Religion</p>
+                    <p>:&nbsp;{{i.religion}}</p>
+                </div>
+                <div class="cd">
+                    <p>Occupation</p>
+                    <p>:&nbsp;{{i.occupation}}</p>
+                </div>
+                <div class="cd">
+                    <p>About Me</p>
+                    <p>: &nbsp;{{i.about|truncatechars:10}}</p>
+                </div>
+                <div class="card-btn"><a href="/view_profile?pid={{i.user.id}}" name="view_more">View More</a>
+                </div>
+            </div>
+            
+
+ </div>
+ {% endfor %}
+</div>
+
+       
+       
+</div>
+
+{% endblock first-container%}
+
+{% block second-container %}{% endblock second-container %} 
+    {% block third-container %}
+    
+    {% endblock third-container %}

@@ -1,0 +1,106 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block first-container %}
+<div class="container_fluid_2">
+
+<div class="header-1">
+        <div class="user-dp"><img src="/media/{{other_user_dp.pro_pic}}" alt="">
+        </div>
+        <div class=""><p>{{other_user.first_name}}</p>
+       {% comment %} {% if other_user.is_authenticated %}<p class="last-login">Online</p>
+        {% else %}
+            <p class="last-login">{{other_user.last_login}}</p>
+            {% endif %}  {% endcomment %}
+        </div>
+            {% comment %} <i class="fas fa-times" id="chat-times" style="margin-left: auto;"></i> {% endcomment %}
+
+        </div>
+    <div class="messages-area">
+        {% for message in messagess %}
+        <div class="message 
+        {% if message.sender == request.user %}right{% else %}left{% endif %}
+        ">
+            {% comment %} <div class="sent-by">{{ message.sender.username }}</div> {% endcomment %}
+            {% comment %} <div class="content"></div> {% endcomment %}
+            <div class="content">{{ message.message }}</div>
+            <div class="chat-time">{{message.date_created|time}}</div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="input-area">
+                <div class="sender-dp"><img src="/media/{{data.pro_pic}}" alt=""></div>
+                <input type="text" placeholder="Type a messgae here" id="message-input">
+                <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+    </div>
+    </div>
+{% endblock first-container %}
+
+{% block second-container %}
+{% endblock second-container %}
+
+{% block third-container %}
+{% endblock third-container %}
+{% comment %} {% block footer %}
+{% endblock footer %} {% endcomment %}
+
+{% block script %}
+
+<script>
+    let message_send_btn = document.getElementById("send-btn");
+    let message_input = document.getElementById("message-input");
+    function send_message() {
+        let message = message_input.value;
+        if (message === "") {
+            return;
+        }
+        message_input.value = "";
+        fetch("{% url 'chatroom-ajax' other_user.id %}",
+            {
+                method: "POST",
+                credentials: 'same-origin',
+                headers: {
+                    "Content-Type": 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify(message)
+            }
+        ).then(e => e.json()).then(messages => {
+            for (message of messages) {
+                construct_message(message);
+            }
+        });
+    }
+
+    function load_messages() {
+        fetch("{% url 'chatroom-ajax' other_user.id %}")
+            .then(e => e.json())
+            .then(messages => {
+               // console.log(messages) //
+                for (message of messages) {
+                    construct_message(message);
+                }
+            })
+    }
+
+    function construct_message(message){
+        let messages_container = document.querySelector(".messages-area");
+        let class_name = "left"
+        if (message.sent){
+            class_name = "right"
+        }
+        let div = document.createElement("div");
+        div.classList.add("message", class_name);
+        div.innerHTML = `
+        {% comment %} <div class="sent-by">${ message.sender }</div> {% endcomment %}
+            <div class="content">${ message.message }</div>
+            <div class="chat-time">${ message.time }</div>
+        `
+        messages_container.appendChild(div);
+        div.scrollIntoView()
+    }
+    message_send_btn.addEventListener('click', send_message);
+    setInterval(load_messages, 2000);
+</script>
+
+{% endblock script %}

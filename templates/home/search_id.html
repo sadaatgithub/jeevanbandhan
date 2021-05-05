@@ -1,0 +1,431 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% block title %}Search{% endblock title %}
+{% block first-container %}
+<div class="container_fluid">
+    <div class="container_profile">
+        <div class="view_pro_nav">
+            <h3><a href="/"><i class="fas fa-home"></i></a> &nbsp;> Profile</h3>
+        </div>
+        <div class="view_pro_dp">
+            <div class="profile_id">
+                <h3>Profile Id : {{profile.pro_Id}}</h3>
+            </div>
+            <div class="view_pro_dp_details">
+                <div class="view_pro_pic">
+                    <div class="view_pro_pic_div">
+                    {% if profile.pro_pic %}
+                        <img src="/media/{{profile.pro_pic}}" alt="">
+                        {% else %}
+                        <img src="{%static 'imgs/default.png'%}" alt="">
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="view_pro_info">
+                    <table class="profile_table">
+                        <tbody>
+                            <tr class="opened">
+                                <td class="day_label">Age :</td>
+                                <td class="day_value">{{profile.age}}</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label">Height :</td>
+                                <td class="day_value">{{profile.height}}</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label">Last Login :</td>
+                                <td class="day_value">{{profile.user.last_login}}</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label">Religion :</td>
+                                <td class="day_value">{{profile.religion}}</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label">Marital Status :</td>
+                                <td class="day_value">{{profile.marital_status}}</td>
+                            </tr>
+                            <tr class="opened">
+                                <td class="day_label">Location :</td>
+                                <td class="day_value">{{profile.current_location}}</td>
+                            </tr>
+                            <tr class="closed">
+                                <td class="day_label">Profile Created by :</td>
+                                <td class="day_value closed"><span>{{profile.pro_created}}</span></td>
+                            </tr>
+                            <tr class="closed">
+                                <td class="day_label">Education :</td>
+                                <td class="day_value closed"><span>{{profile.education}}</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+        <div class="view_pro_search_id">
+            <div class="search_div">
+                        <h3 style="margin-left: 0.5rem;">Search By ID</h3>
+                        <form action="/search_by_id" method='GET' class="search-div-form">
+                           
+                            <input type="text" placeholder="JB00X" name="search_by_id">
+                           <a href="" name='data_id'><i class="fas fa-search"></i></a>
+                        </form>
+                    </div>
+                    <div class="suggestion_wrapper">
+
+                        <h3 style="padding: 0.5rem;">View Similar Profiles</h3>
+                    <div class="suggestions">
+                        <div class="dp_div">
+                            <img src="{%static 'imgs/default.png'%}"  alt="">
+                        </div>
+                        <div class="pro_info_div">
+                            <div>
+                            <p class="pro_similar_id">ID: <span>Test Name</span></p>
+                            <p>Age:{{search2.age}}<span>Height</span></p>
+                            <p>Occupation:</p>
+                        </div>
+                    <div class="">View Profile</div>
+
+                        </div>
+                    </div>
+                    <div class="suggestions">
+                        <div class="dp_div">
+                            <img src="{%static 'imgs/default.png'%}"  alt="">
+                        </div>
+                        <div class="pro_info_div">
+                            <div>
+                            <p>ID: <span>Test Name</span></p>
+                            <p>Age: <span>Height</span></p>
+                            <p>Occupation:</p>
+                        </div>
+                    <div class="">View Profile</div>
+
+                        </div>
+                    </div>
+                    <div class="suggestions">
+                        <div class="dp_div">
+                            <img src="{%static 'imgs/default.png'%}"  alt="">
+                        </div>
+                        <div class="pro_info_div">
+                            <div>
+                            <p>ID: <span>Test Name</span></p>
+                            <p>Age: <span>Height</span></p>
+                            <p>Occupation:</p>
+                        </div>
+                    <div class="">View Profile</div>
+
+                        </div>
+                    </div>
+                    <div class="suggestions">
+                        <div class="dp_div">
+                            <img src="{%static 'imgs/default.png'%}"  alt="">
+                        </div>
+                        <div class="pro_info_div">
+                            <div>
+                            <p>ID: <span>Test Name</span></p>
+                            <p>Age: <span>Height</span></p>
+                            <p>Occupation:</p>
+                        </div>
+                    <div class="">View Profile</div>
+
+                        </div>
+                    </div>
+                    
+                </div>
+        </div>
+
+
+{% comment %}  {% endcomment %}
+        <div class="view_pro_other_details">
+            <div class="other_details_nav">
+                <ul>
+                    <li id="abt_me_btn" class="abt_btn active">About Myself</li>
+                    <li id="abt_family_btn">Family Details</li>
+                    <li id="abt_partner_btn">Partner Preferene</li>
+
+                </ul>
+            </div>
+            <!-- partner preference -->
+            <div class="view_pro_abt_partner abt_partner hidden" id="abt_partner">
+                <table class="profile_table">
+                    <tbody>
+                        <tr class="opened">
+                            <td class="day_label">Age :</td>
+                        <td class="day_value">{{profile.p_age_min}} To {{profile.p_age_max}}</td>
+                        </tr>
+                        <tr class="opened">
+                            <td class="day_label">Marital Status :</td>
+                            <td class="day_value">{{profile.p_Marital_Status}}</td>
+                        </tr>
+                        <tr class="opened">
+                            <td class="day_label">Body Type :</td>
+                            <td class="day_value closed"><span>{{profile.p_Body_Type}}</span></td>
+                        </tr>
+                        <tr class="opened">
+                            <td class="day_label">Complexion :</td>
+                            <td class="day_value closed"><span>{{profile.p_Complexion}}</span></td>
+                        </tr>
+                        <tr class="opened">
+                            <td class="day_label">Height:</td>
+                            <td class="day_value closed"><span>{{profile.p_Height}}</span></td>
+                        </tr>
+                        <tr class="opened">
+                            <td class="day_label">Diet :</td>
+                            <td class="day_value closed"><span>{{profile.p_Diet}}</span></td>
+                        </tr>
+                        <tr class="opened">
+                            <td class="day_label">Kujadosham / Manglik :</td>
+                            <td class="day_value closed"><span>{{profile.p_Manglik}}</span></td>
+                        </tr>
+                        <tr class="opened">
+                            <td class="day_label">Religion :</td>
+                            <td class="day_value closed"><span>{{profile.p_Religion}}</span></td>
+                        </tr>
+                        <tr class="opened">
+                            <td class="day_label">Caste :</td>
+                            <td class="day_value closed"><span>{{profile.p_Caste}}</span></td>
+                        </tr>
+                        <tr class="opened">
+                            <td class="day_label">Mother Tongue :</td>
+                            <td class="day_value closed"><span>{{profile.p_Mother_Tongue}}</span></td>
+                        </tr>
+                        <tr class="opened">
+                            <td class="day_label">Education :</td>
+                            <td class="day_value closed"><span>{{profile.p_Education}}</span></td>
+                        </tr>
+                        <tr class="opened">
+                            <td class="day_label">Occupation :</td>
+                            <td class="day_value closed"><span>{{profile.p_Occupation}}</span></td>
+                        </tr>
+                        <tr class="opened">
+                            <td class="day_label">Country of Residence :</td>
+                            <td class="day_value closed"><span>{{profile.p_Country_Of_Residence}}</span></td>
+                        </tr>
+                        <tr class="opened">
+                            <td class="day_label">State :</td>
+                            <td class="day_value closed"><span>{{profile.p_State}}</span></td>
+                        </tr>
+                        {% comment %} <tr class="opened">
+                            <td class="day_label">Residency Status :</td>
+                            <td class="day_value closed"><span>{{profile.p_}}</span></td>
+                        </tr> {% endcomment %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- about family -->
+            <div class="view_pro_family_details abt_family hidden" id="abt_family">
+                <div class="basic_lifestyle">
+                    <h3>Family Details</h3>
+                </div>
+                <div class="basic_heading">
+                    <h4>Basic</h4>
+                </div>
+                <table class="profile_table" >
+                    <tbody>
+                        <tr class="opened">
+                            <td class="day_label">Father's Occupation :</td>
+                            <td class="day_value">{{profile.f_occ}}</td>
+                        </tr>
+                        <tr class="opened">
+                            <td class="day_label">Mother's Occupation :</td>
+                            <td class="day_value">{{profile.m_occ}}</td>
+                        </tr>
+                        <tr class="opened">
+                            <td class="day_label">No. of Brothers :</td>
+                            <td class="day_value closed"><span>{{profile.no_bros}}</span></td>
+                        </tr>
+                        <tr class="opened">
+                            <td class="day_label">No. of Sisters :</td>
+                            <td class="day_value closed"><span>{{profile.no_sis}}</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <!-- about me -->
+
+
+            <div class="view_pro_abt_me abt_me" id="abt_me">
+                <div class="abt_me_heading" style="margin-top: 1rem;">
+                    <h3>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Explicabo, dolore.</h3>
+                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Et distinctio explicabo
+                        obcaecati
+                        cumque in quia cupiditate natus aliquam, iste nulla.</p>
+                </div>
+
+                <div class="basic_lifestyle">
+                    <h3>Basic & lifestyle</h3>
+                </div>
+                <div class="view_pro_abt_me_basic">
+                    <div class="abt_me_basic">
+                        <table class="profile_table">
+                            <tbody>
+                                <tr class="opened_1">
+                                    <td class="day_label">Name :</td>
+                                    <td class="day_value"> {{profile.user.first_name}} {{profile.middlename}} {{profile.user.last_name}}</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Marital Status :</td>
+                                    <td class="day_value">{{profile.marital_status}}</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Body Type :</td>
+                                    <td class="day_value">{{profile.B_type}}</td>
+                                </tr>
+                                {% comment %} <tr class="opened">
+                                    <td class="day_label">Marital Status :</td>
+                                    <td class="day_value">Single</td>
+                                </tr> {% endcomment %}
+                                <tr class="opened">
+                                    <td class="day_label">Height :</td>
+                                    <td class="day_value">{{profile.height}} cm</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Physical Status :</td>
+                                    <td class="day_value closed"><span>Not Specified</span></td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Profile Created by :</td>
+                                    <td class="day_value closed"><span>{{profile.pro_created}}</span></td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Drink :</td>
+                                    <td class="day_value closed"><span>{{profile.drink}}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="abt_me_basic">
+                        <table class="profile_table">
+                            <tbody>
+                                <tr class="opened_1">
+                                    <td class="day_label">Age :</td>
+                                    <td class="day_value">{{profile.age}}</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Mother Tongue :</td>
+                                    <td class="day_value">{{profile.Mother_Tounge}}</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Complexion :</td>
+                                    <td class="day_value">{{profile.complexion}}</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Weight :</td>
+                                    <td class="day_value">{{profile.weight}}</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Blood Group :</td>
+                                    <td class="day_value">{{profile.b_Group}}</td>
+                                </tr>
+                                <tr class="closed">
+                                    <td class="day_label">Diet :</td>
+                                    <td class="day_value closed"><span>{{profile.diet}}</span></td>
+                                </tr>
+                                <tr class="closed">
+                                    <td class="day_label">Smoke :</td>
+                                    <td class="day_value closed"><span>{{profile.smoke}}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="basic_lifestyle">
+                    <h3>Religious / Social & Astro Background</h3>
+                </div>
+                <div class="view_pro_abt_me_basic">
+                    <div class="abt_me_basic">
+                        <table class="profile_table">
+                            <tbody>
+                                <tr class="opened">
+                                    <td class="day_label">Time of Birth :</td>
+                                    <td class="day_value">Not Specified</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Caste :</td>
+                                    <td class="day_value">Not Specified</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Date of Birth :</td>
+                                    <td class="day_value closed"><span>01-05-1988</span></td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Place of Birth :</td>
+                                    <td class="day_value closed"><span>Not Specified</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="abt_me_basic">
+                        <table class="profile_table">
+                            <tbody>
+                                <tr class="opened_1">
+                                    <td class="day_label">Religion :</td>
+                                    <td class="day_value">Hindu</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Sub Caste :</td>
+                                    <td class="day_value">Not Specified</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Rashi :</td>
+                                    <td class="day_value">{{profile.rashi}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="basic_lifestyle">
+                    <h3>Education & Career</h3>
+                </div>
+                <div class="view_pro_abt_me_basic">
+                    <div class="abt_me_basic">
+                        <table class="profile_table">
+                            <tbody>
+                                <tr class="opened">
+                                    <td class="day_label">Education :</td>
+                                    <td class="day_value">{{profile.education}}</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Education Detail :</td>
+                                    <td class="day_value">{{profile.education_detail}}</td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Occupation Detail :</td>
+                                    <td class="day_value closed"><span>{{profile.occupation_detail}}
+                                           </span></td>
+                                </tr>
+                                <tr class="opened">
+                                    <td class="day_label">Annual Income :</td>
+                                    <td class="day_value closed"><span>{{profile.annual_income}}</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+
+
+
+
+    </div>
+
+</div>
+{% endblock  %}
+
+{% block second-container %}
+{% endblock second-container %}
+{% block third-container %}
+{% endblock third-container %}

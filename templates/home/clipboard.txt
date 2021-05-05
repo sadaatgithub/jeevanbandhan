@@ -1,0 +1,181 @@
+ <div class="container-first-subcontainer">
+         <div class="preferance-div">
+                <form action="">
+                    <div class="col-one">
+                        <label for="">I am looking for a
+                        </label>
+                        <select name="" id="">
+                            <option value="">Select</option>
+                            <option value="">Male</option>
+                            <option value="">Female</option>
+                        </select>
+                    </div>
+                    <div class="col-one">
+                        <label for="aged-from">Aged From</label>
+                        <select name="" id="">
+                            <option value="">Select</option>
+                            <option value="">18</option>
+                            <option value="">19</option>
+                        </select>
+                    </div>
+                    <div class="col-one">
+                        <label for="aged-to">To</label>
+                        <select name="" id="">
+                            <option value="">Select</option>
+                            <option value="">25</option>
+                            <option value="">26</option>
+                        </select>
+                    </div>
+                    <div class="col-one">
+                        <label for="">Religion</label>
+                        <select name="" id="">
+                            <option value="">Select</option>
+                            <option value="">Hindu</option>
+                            <option value="">Christian</option>
+                        </select>
+                    </div>
+                    <div class="col-one">
+                        <label for="">Mother Tounge</label>
+                        <select name="" id="">
+                            <option value="">Select</option>
+                            <option value="">Hindi</option>
+                            <option value="">Marathi</option>
+                        </select>
+                    </div>
+                    <div class="col-one"></div>
+
+                    <div class="col-one">
+                        <input type="button" class="tag-btn" value="Submit">
+                    </div>
+
+                </form>
+            </div>
+    </div>
+
+
+
+    {% comment %} 
+    def profile_search_list(request):
+
+    queryset = profiles.objects.all().order_by('-timestamp')
+
+    for object in queryset:
+        if object.pId == "TMG":
+            object.pId = "TMG00" + str(object.tmId)
+            object.save()
+
+    query1 = request.GET.get('religion')
+    query2 = request.GET.get('gender')
+    query3 = request.GET.get('maritalstatus')
+    query4 = request.GET.get('min_age')
+    query5 = request.GET.get('max_age')
+
+    if query1 :#and query2 and query3 and query4 and query5 :
+        queryset = queryset.filter(religion__icontains=query1)#.filter( p_age_max__lte=query5)
+        queryset = queryset.filter(age__gte=int(query4))
+        queryset = queryset.filter(age__lte=int(query5))
+        queryset = queryset.filter(gender=query2)
+        queryset = queryset.filter(maritalStatus__icontains=query3)
+ {% endcomment %}
+
+
+
+
+ {% comment %} search div {% endcomment %}
+
+
+
+  {% if user.is_authenticated %}
+    {% block search_container %}
+          <div class="container-first-subcontainer">
+         <div class="preferance-div">
+                <form action="/search" action="GET">
+                {% csrf_token %}
+                    <div class="col-one">
+                        <label for="gender">I am looking for a
+                        </label>
+                        <select name="gender" id="">
+                     
+
+                             <option value="">Select</option>
+                             <option value="Male">Male</option>
+                            <option value="Female">Female</option>  
+                            <option value="Other">Other</option>  
+                            {% comment %} {% for option in data2 %}
+                                 <option value="{{option.choice}}">Select</option>
+                            {% endfor %} {% endcomment %}
+                        </select>
+                    </div>
+                    <div class="col-one">
+                      
+                    {% block age_from %}
+                            <label for="min_age">Age From</label>
+                                <select name="min_age" id="">
+                                <option value="">Select</option>
+                                {% comment %} <option value="18">18</option> {% endcomment %}
+                                {% comment %} <option value="19">19</option> {% endcomment %}
+                            </select>
+
+
+                    {% endblock age_from %}
+
+                   
+                        
+                    </div>
+                    <div class="col-one">
+                        <label for="aged-to">To</label>
+                        <select name="max_age" id="">
+                            <option value="">Select</option>
+                            <option value="25">25</option>
+                            <option value="26">26</option>
+                            <option value="33">33</option>
+                            <option value="55">55</option>
+                        </select>
+                    </div>
+                    <div class="col-one">
+                        <label for="religion">Religion</label>
+                        <select name="religion" id="">
+                            <option value="">Select</option>
+                            <option value="Hindu">Hindu</option>
+                            <option value="Christian">Christian</option>
+                            <option value="Sikh">Sikh</option>
+                            <option value="Muslim">Muslim</option>
+                            <option value="Bouddh">Bouddh</option>
+                        </select>
+                    </div>
+                    <div class="col-one">
+                        <label for="">Mother Tounge</label>
+                        <select name="language" id="">
+                            <option value="" deactive>Select</option>
+                            <option value="Hindi">Hindi</option>
+                            <option value="Marathi">Marathi</option>
+                        </select>
+                    </div>
+                    <div class="col-one"></div>
+
+                    <div class="col-one">
+                        <input type="submit" name="query" class="tag-btn" value="Submit">
+                    </div>
+
+                </form>
+            </div>
+    </div>
+{% endblock search_container %}
+   
+    {% else %}
+
+
+
+    {% comment %} gendown {% endcomment %}
+
+
+     {% if data.gender == "Female" %}
+                                <option value="Female" selected>Female</option>
+                                {% else %}
+                                <option value="Female">Female</option>
+                                {% endif %}
+                                {% if data.gender == "Other" %}
+                                <option value="Other" selected>Other</option>
+                                {% else %}
+                                <option value="Other">Other</option>
+                                {% endif %}

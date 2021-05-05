@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block first-container%}
+<div class="search-container">
+
+<div class="advanced_search" id="advSearch"><h4>Advanced Search</h4>
+<form action="adv_search" method="POST" class="adv_search_div">
+
+        {% csrf_token %}
+    <div class="form_control">
+
+        <label for="looking_for">I am Looking for </label>
+        <select name="looking_for" id="">
+        <option value="Male">Groom</option>
+        <option value="Female">Bride</option></select>
+    </div>
+    <div class="form_control">
+    <label for="age_in_years">Age in Years</label> <strong> From </strong><select name="age_from" id="">
+        {% for i in range2 %}
+
+        <option value="{{i}}">{{i}}</option>
+        {% endfor %}
+    </select> <strong>To</strong>
+        <select name="age_to" id="">
+            {% for i in range2 %}
+
+            <option value="{{i}}">{{i}}</option>
+            {% endfor %}</select>
+
+    </div>
+    <div class="form_control">
+        <label for="marital_status">Marrital Status 
+        </label>
+        &nbsp;
+            <select name="marital_status" id="">
+                <option value="single">Single</option>
+                <option value="married">Married</option>
+                <option value="widowed">widowed</option>
+            </select>
+    </div>
+    <div class="form_control">
+        {% comment %} <div style="display: flex; justify-content: space-between;gap: 1rem;"> {% endcomment %}
+        <label for="ht_from">Height
+        </label>
+        &nbsp; From
+            <select name="ht_from" id="">
+                {% for i in h_choices %} 
+                <option value="{{i.0}}">{{i.1}}</option>
+                {% endfor %}
+            </select>
+            To
+            <select name="height_to" id="">
+                {% for i in h_choices %} 
+                <option value="{{i.0}}">{{i.1}}</option>
+                {% endfor %}
+            </select>
+        {% comment %} <div style="display: flex; justify-content: space-between;gap: 2rem;">
+        <label for="weight">Weight
+        </label>
+        <!-- &nbsp; -->
+            <select name="weight" id="">
+                {% for i in range %}
+                <option value="{{i}}">{{i}}</option>
+                {% endfor%}
+            </select></div> {% endcomment %}
+    </div>
+    <div class="form_control">
+        <label for="profile_disability">Profile With Disability
+        </label>
+        &nbsp;
+            <select name="disab_profile" id="">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+                <option value="">Both</option>
+            </select>
+    </div>
+    <div class="form_control">
+        <label for="complexion">Complexion
+        </label>
+        &nbsp;
+            <select name="complexion" id="">
+                <option value="Dark">Dark</option>
+                <option value="Fair">Fair</option>
+                <option value="Very Fair">Very Fair</option>
+                <option value="Wheatish">Wheatish</option>
+            </select>
+    </div>
+    {% comment %} <div class="form_control">
+    </div> {% endcomment %}
+    <div class="form_control">
+        <label for="Religion">Religion
+        </label>
+        &nbsp;
+            <select name="religion" id="">
+                <option value="Hindu">Hindu</option>
+                <option value="Muslim">Muslim</option>
+                <option value="Sikh">Sikh</option>
+                <option value="Christian">Christian</option>
+                <option value="Bouddh">Bouddh</option>
+            </select>
+    </div>
+    {% comment %} <div class="form_control">
+        <label for="caste">Caste
+        </label>
+        &nbsp;
+            <select name="caste" id="">
+                <option value="Dark">Dark</option>
+                <option value="Fair">Fair</option>
+                <option value="Very Fair">Very Fair</option>
+                <option value="Wheatish">Wheatish</option>
+            </select>
+    </div> {% endcomment %}
+    <div class="form_control">
+        <label for="education">Education
+        </label>
+        &nbsp;
+            <select name="education" id="">
+            {% for i in edu_choices %}
+                <option value="{{i.0}}">{{i.1}}</option>
+                {% endfor%}
+            </select>
+    </div>
+    <div class="form_control">
+        <label for="manglik">Manglik
+        </label>
+        &nbsp;
+            <select name="manglik" id="">
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+                <option value="">Both</option>
+            </select>
+    </div>
+    <div class="form_control adv_search_btn">
+        <button type="submit" name="adv_search"> Search</button>
+    </div>
+    </form>
+</div>
+{% comment %} end advanced search div here {% endcomment %}
+
+
+    <div class="search_result">
+    <div class="res1"> <h3>Total Profile Matched: &nbsp;{{search2|length}}</div> 
+
+    <div class="cards_container">
+
+        {% for i in search2 %}
+            <div class="cards">
+            {% if i.pro_pic %}
+                        <div class="card-img"><img src="/media/{{i.pro_pic}}" alt="">
+                        </div>
+                    {% else %}
+                        <div class="card-img"><img src="{%static 'imgs/default.png'%}" alt="">
+                        </div>
+                    {% endif %}
+                    <div class="card-detail">
+                        <div class="cd">
+                        <i class="fas fa-ellipsis-v"></i>
+                    
+                    </div>
+
+                    <div class="cd">
+                        <p>ID</p>
+                        <p>:&nbsp;  {{i.pro_Id}}</p>
+                    </div>
+                    <div class="cd">
+                        <p>Name</p>
+                        <p>:&nbsp;{{i.user.first_name}} {{i.user.last_name}}</p>
+                    </div>
+                    <div class="cd">
+                        <p>Age</p><p>:&nbsp; {{i.age}}</p>
+                    </div>
+                    <div class="cd">
+                        <p>Gender</p>
+                        <p>:&nbsp;{{i.gender}}</p>
+                    </div>
+                    <div class="cd">
+                        <p>Religion</p>
+                        <p>:&nbsp;{{i.religion}}</p>
+                    </div>
+                    <div class="cd">
+                        <p>Occupation</p>
+                        <p>:&nbsp;{{i.occupation}}</p>
+                    </div>
+                    <div class="cd">
+                        <p>About Me</p>
+                        <p>: &nbsp;{{i.about|truncatechars:10}}</p>
+                    </div>
+                    <div class="card-btn"><a href="/view_profile?pid={{i.user.id}}" name="view_more">View More</a>
+                    </div>
+                </div>
+                
+
+            </div>
+        {% endfor %}
+
+        </div>
+    </div>
+
+       
+       
+<script>
+    var csrf = "{{ csrf_token }}"
+
+</script>
+
+</div>
+
+{% endblock first-container%}
+
+{% block second-container %}{% endblock second-container %} 
+    {% block third-container %}
+    
+    {% endblock third-container %}

@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock title %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+        integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA=="
+        crossorigin="anonymous" />
+</head>
+
+<body>
+    {% block navigation %}
+        <header class="header">
+            <nav class="navbar">
+                <div class="logo"><a href="/home">
+                        <h1>Jeevan<span>Bandhan</span></h1>
+                    </a>
+                </div>
+            {% block menu-list %}
+                <ul class="menu-list">
+
+                    {%if user.is_authenticated %}
+             
+                    <li id="bashboard-btn">Dashboard</li>
+
+                    {% else %}
+                    <li id="log-in-btn">Log In <i class="far fa-user"></i></li>
+                    <li id="sign-up-btn">Sign Up</li>
+
+                    {% endif %}
+                    <li class="contactUs-btn"><a href="contact">Contact Us</a></li>
+                    <li class="help-btn"><a href="help">Help</a></li>
+                    {% comment %} <li class="help-btn"><a href="logout">logout</a></li> {% endcomment %}
+
+                </ul>
+            {% endblock menu-list %}
+
+                <i class="fas fa-bars" id="burger-menu"></i>
+
+            </nav>
+            <div class="dashboard" id="dashboard">
+                    <div class="dashboard-times">
+
+                        <i class="fas fa-times" id="dashboard-close-btn"></i>
+                    </div>
+                    <div class="profile-pic">
+                     {% if data.pro_pic %}
+                        <img src="/media/{{data.pro_pic}}" alt="profile-pic">
+                        {% else %}
+                        <img src="{%static 'imgs/default.png'%}" alt="profile-pic">
+                        {% endif %}
+                        {% comment %} <h5>{{user.first_name}} {{user.last_name}}</h5> {% endcomment %}
+                        <p>{{user.first_name}} {{user.last_name}}</p>
+                        <p>Profile Id:{{data.pro_Id}}</p>
+                    </div>
+                    <div class="dashboard-menu">
+                        <ul class="dashboard-menu-list">
+                            <li><a href="/home"><i class="fas fa-home"></i>Home</a></li>
+                            {% comment %} <li><a href="editprofile"><i class="fas fa-user"></i>Edit Profile</a></li> {% endcomment %}
+                            <li><a href="view_self_profile?pid={{user.id}}"><i class="fas fa-user"></i>View Profile</a></li>
+                            <li><a href=""><i class="fas fa-cog"></i>Setting</a></li>
+                            <li><a href=""><i class="far fa-envelope"></i>Messages</a></li>
+                            <li><a href="/fav_list"><i class="fas fa-heart"></i>Favorites</a></li>
+                            <li><a href=""><i class="fas fa-dollar-sign"></i>Membership</a></li>
+                            <li><a href=""><i class="fas fa-pen-fancy"></i>My Story</a></li>
+                            <li><a href="logout_user"><i class="fas fa-sign-out-alt"></i>Log Out</a></li>
+                        </ul>
+                    </div>
+            </div>
+        </header>
+    {% endblock navigation %}
+
+
+    {% for message in messages %}
+        <div class="alert {{message.tags}} show" id="alert">
+            <div class="alert_div">
+            <div class="fas fa-check-circle">
+                </div>
+                <div class="fas fa-exclamation-circle">
+                </div>
+                
+
+                <div class="msg"> {% if message.tags == "success" %}Success {% else %}Error {% endif %}: {{message}}
+                </div>
+                <div class="close-btn">
+                        <div class="fas fa-times" id="alert-close"></div>
+                </div>
+        </div>
+        </div>
+        
+
+    {% endfor%}
+    {% comment %} {% for message in messages %}
+        <div class="alert {{message.tags}} show" id="alert">
+            <span class="fas fa-exclamation-circle">
+            </span>
+            <span class="fas fa-check-circle">
+            </span>
+
+            <span class="msg"><strong> Message : </strong>{{message}}</span>
+            <span class="close-btn">
+                <span class="fas fa-times" id="alert-close">
+
+                </span>
+
+            </span>
+        </div>
+    {% endfor%} {% endcomment %}
+
+
+{% block first-container %}
+ {% if user.is_authenticated %}
+    {% block search_container %}
+          <div class="container-first-subcontainer">
+         <div class="preferance-div">
+                <form action="/search" method="POST">
+
+                {% csrf_token %}
+                    <div class="col-one">
+                        <label for="gender">I am looking for a
+                        </label>
+                        <select name="gender" id="" required>
+                     
+
+                             <option value="">Select</option>
+                             <option value="Male">Male</option>
+                            <option value="Female">Female</option>  
+                            <option value="Other">Other</option>  
+                            {% comment %} {% for option in data2 %}
+                                 <option value="{{option.choice}}">Select</option>
+                            {% endfor %} {% endcomment %}
+                        </select>
+                    </div>
+                    <div class="col-one">
+                      
+                            <label for="min_age">Age</label>
+                                <select name="min_age" id="" required>
+                            <option value="">From</option>
+                                
+                                {% for i in range %}
+                                <option value="{{i}}">{{i}}</option> 
+                                {% endfor %}
+                            </select>
+
+
+
+                   
+                        
+                    </div>
+                    <div class="col-one">
+                        <label for="aged-to">Age</label>
+                        <select name="max_age" id="" required>
+                            <option value="">To   </option>
+
+                               {% for i in range %}
+                                <option value="{{i}}">{{i}}</option> 
+                                {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-one">
+                        <label for="religion">Religion</label>
+                        <select name="religion" id="" required>
+                            <option value="">Select</option>
+                            <option value="Hindu">Hindu</option>
+                            <option value="Christian">Christian</option>
+                            <option value="Sikh">Sikh</option>
+                            <option value="Muslim">Muslim</option>
+                            <option value="Bouddh">Bouddh</option>
+                        </select>
+                    </div>
+                    {% comment %} <div class="col-one">
+                        <label for="">Mother Tounge</label>
+                        <select name="language" id="">
+                            <option value="" deactive>Select</option>
+                            <option value="Hindi">Hindi</option>
+                            <option value="Marathi">Marathi</option>
+                        </select>
+                    </div> {% endcomment %}
+                    <div class="col-one"></div>
+
+                    <div class="col-one">
+                        <input type="submit" name="query" class="tag-btn" value="Submit">
+                    </div>
+
+                </form>
+            </div>
+    </div>
+{% endblock search_container %}
+   
+
+
+
+{% else %}
+
+    <div class="container-first">
+        
+         <h1 class="tagline anim">"Better we were alone ,<br>
+                <span> BEST WE ARE TOGETHER ...!"</span>
+            </h1>
+        <div class="log-in-box" id="log-in-box">
+            <div class="login-control">
+                <h3>Log In </h3>
+                <i class="fas fa-times" id="login-close"></i>
+            </div>
+            <form action="{% url 'login' %}" class="log-in-form" method="POST">
+                {% csrf_token %}
+                <div class="form-div">
+
+                <input type="text" name="user-id" required placeholder=" " class="form-input">
+                <label for="user-id" class="input-label" id="user-id-login">User Name</label>
+            </div>
+                <div class="form-div">
+
+                    <input type="password" id="password-login" name="password_login" required placeholder=" " class="form-input">
+                    <label for="password_login" class="input-label">Password</label>
+                </div>
+                <div class="forgot-pass">
+                    <a href="">Forgot Password</a>
+                </div>
+                <button class="login-submit-btn" type="submit">SUBMIT</button>
+            </form>
+        </div>
+
+     <div class="register-here">
+
+            <div class="register-title">
+               <div> <h3>REGISTER HERE</h3></div>
+                <div><i class="fas fa-times" id="register-close"></i></div>
+            </div>
+            <form action="/sign_up" class="register-form" method="POST">
+            {% csrf_token %}
+                <div class="form-div">
+                    <div class="form-sub-div">
+                        <label for="fname">First Name</label>
+                        <input type="text" name="fname" required>
+                    </div>
+                    <div class="form-sub-div">
+                        <label for="lname">Last Name</label>
+                        <input type="text" name="lname"required>
+                    </div>
+                </div>
+                <div class="form-div">
+                    <div class="form-sub-div">
+                        <label for="email">Email</label>
+                        <input type="text" name="email"required>
+                    </div>
+                </div>
+                <div class="form-div">
+                    <div class="form-sub-div">
+                        <label for="uname">Username</label>
+                        <input type="text" name="uname"required>
+                    </div>
+                </div>
+                <div class="form-div">
+                    <div class="form-sub-div">
+                        <label for="pass1">Password</label>
+                        <input type="password" name="pass1"required>
+                    </div>
+                    <div class="form-sub-div">
+                        <label for="pass2">Confirm Password</label>
+                        <input type="password" name="pass2"required>
+                    </div> 
+                </div>
+                <div class="form-div">
+                    <div class="form-sub-div">
+                        <label for="mobile-no">Mobile No</label>
+                        <input type="number" name="mobile-no">
+                    </div>
+                    <div class="form-sub-div">
+                        <label for="gender">Gender</label>
+                        <select name="gender" id="" class="form-choice">
+                            <option value="">Select</option>
+                            <option value="Male">Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+              
+                </div>
+            
+                <div class="form-div">
+                    <div class="form-footer">
+                        <p><input type="checkbox" required class="checkbox"> I have agreed to the <a href="#">Terms &
+                            Conditions</a> & have
+                        read and
+                        understood the <a href="#">Privacy Policy</a></p>
+                    </div>
+                </div>
+                <div class="form-div">
+                    <div class="form-sub-div">
+                    <button type="submit"  class="form-submit-btn" value="Submit">Submit</button>
+                </div>
+                </div>
+
+            </form>
+        
+
+        </div>
+
+      
+    </div>
+{% endif %}
+    {% endblock first-container %}
+
+    <div class="popup-background"></div>
+
+
+{% block second-container %}
+    <div class="second-container">
+        <div class="col-1 sub-col">
+           
+            <img src="{% static 'imgs/disabled.png'%}" alt="image">
+
+            <h4>Developed for Disabled</h4>
+            <p>One of its kind of matchmaking matrimony portal for PwD</p>
+        </div>
+        <div class="col-2 sub-col">
+           {% comment %} <img src="/img/security.png" alt="">  {% endcomment %}
+            <img src="{% static 'imgs/securitypng.png'%}" alt="image">
+            <h4>Top most Security</h4>
+            <p>With advanced tecnology we assure you top most security to your valuable</p>
+        </div>
+
+        <div class="col-3 sub-col">
+            {% comment %} <img src="/img/iconfinder_data_privacy_103465.png" alt=""> {% endcomment %}
+            <img src="{% static 'imgs/privacy_2921800.png'%}" alt="image">
+
+            <h4>100% Privacy</h4>
+            <p>Control who can see
+                your profile and pictures with
+                advanced privacy settings</p>
+        </div>
+    </div>
+{% endblock second-container %}
+
+{% block third-container %}
+
+    <div class="third-container">
+        <div class="about-us">
+            <h2>About JeevanBandhan.com</h2>
+            <p>JeevanBandhan is one of India’s leading matrimonial websites that has helped lakhs of members find their
+                perfect life partner.</p>
+            <p>We believe choosing a life partner is a big and important decision, and hence work towards giving a
+                simple
+                and secure matchmaking experience for you and your family. Each profile registered with us goes through
+                a
+                manual screening process before going live on site; we provide superior privacy controls for Free; and
+                also
+                verify contact information of members</p>
+            <p>You can register for Free and search according to your specific criteria on age, height, community,
+                profession,
+                income, location and much more- on your computer, tablet or mobile. Regular custom mails and
+                notifications
+                make the process easier and take you closer to your JeevanBandhan!</p>
+        </div>
+    </div>
+{% endblock third-container %}
+   
+
+{% block footer %}
+    <footer>
+        <a href="facebook" target="_blank"><i class="fab fa-facebook"></i></a>
+        <a href="twitter.com"><i class="fab fa-twitter"></i></a>
+        <a href="youtube.com"><i class="fab fa-youtube"></i></a>
+        <a href="instagram.com"><i class="fab fa-instagram"></i></a>
+
+    </footer>
+{% endblock footer %}
+
+    <script src="{% static 'js/script-main.js' %}"></script>
+    <script src="{% static 'js/script-secondary.js' %}"></script>
+    <script src="{% static 'js/dashboard.js' %}"></script>
+
+{% block script %}
+   
+{% endblock script %}
+    
+</body>
+
+</html>

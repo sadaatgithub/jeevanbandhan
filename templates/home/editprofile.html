@@ -1,0 +1,658 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+{% block first-container %}
+<div class="container_fluid">
+
+    {% comment %} <div class="profile-info"> {% endcomment %}
+            {% comment %} <div class="profile-title">
+                <h3>Home > Profile</h3>
+            </div> {% endcomment %}
+        <form action="/editprofile" method="POST" class="profile-form profile-info" enctype="multipart/form-data">
+
+                {% csrf_token %}
+                <div class="profile-dp">
+                    <div class="profile-dp-div">
+                        {% if data.pro_pic %}
+                        <img src="/media/{{data.pro_pic}}" alt="">
+                        {% else %}
+                        <img src="{%static 'imgs/default-dp2.jpg'%}" alt="">
+                        {% endif %}
+
+                        {% comment %} <input type="file" name="profile-pic" id="profile-pic" style="display: none;">
+                        <label for="profile-pic">Change</label> {% endcomment %}
+                        <div class="changeImg"> <input type="file" name="profile-pic" id="profile-pic" style="display: none;">
+                        <label for="profile-pic">Update</label></div>
+                    </div>
+                    <h3>{{user.first_name}} {{user.last_name}}</h3>
+                    {% comment %} <h3>{{data.pro_Id}} {{user.last_name}}</h3> {% endcomment %}
+                </div>
+                {% comment %} <div class="profile-dp-2">
+                   <h3>Name:-</h3>
+                   <h3>Name:-</h3>
+                   <h3>Name:-</h3>
+                   <h3>Name:-</h3>
+                </div> {% endcomment %}
+
+                <div class="personal-info">
+                    <h4>Personal Info</h4>
+                    <div class="personal-info-name flex1">
+                        <div class="flex"><label for="fname">Name<sup>*</sup></label>
+                            <input type="text" name="fname" value="{{user.first_name}}">
+                        </div>
+                        <div class="flex"><label for="mname">Middle Name</label>
+                            <input type="text" name="mname" value="{{data.middlename}}">
+                        </div>
+                        <div class="flex"><label for="lname">Last Name<sup>*</sup></label>
+                            <input type="text" name="lname" value="{{user.last_name}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="personal-info">
+                    <h4>Contact Details</h4>
+                    <div class="personal-info-contact flex1">
+
+                        <div class="flex">
+                            <label for="email">Email<sup>*</sup></label>
+                            <input type="email" name="email" value="{{user.email}}">
+
+                        </div>
+                        <div class="flex">
+                            <label for="mobile">Mobile<sup>*</sup></label>
+                            <input type="number" name="mobile" value="{{data.conttact_no}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="personal-info">
+                    <h4>Personal Details</h4>
+                    <div class="personal-info-physical flex1">
+                        <div class="flex">
+                        {% comment %} {{form}} {% endcomment %}
+                            <label for="dob">DOB<sup>*</sup></label>
+                            {% if data.dob %}
+                            <input type="date" name="dob" placeholder="YYYY-MM-DD" value="{{data.dob|date:"Y-m-d"}}" required> 
+                            {% else %}
+                            <input type="date" name="dob" placeholder="YYYY-MM-DD">
+                            {% endif %}
+                             
+                            
+                        </div>
+
+
+
+
+                        <div class="flex">
+                            <label for="age">Age<sup>*</sup></label>
+                            <input type="button" min="18" name="age" value="{{data.age}} Yrs">
+
+                        </div>
+                        <div class="flex">
+                            <label for="gender">Gender<sup>*</sup></label>
+                            <select name="gender" id="">
+                                {% if data.gender == "Male"%}
+                                    <option value="Male" selected>Male</option>
+                                {% else %}
+                                    <option value="Male">Male</option>
+                                {% endif %}
+                                {% if data.gender == "Female" %}
+                                    <option value="Female" selected>Female</option>
+                                {% else %}
+                                    <option value="Female">Female</option>
+                                {% endif %}
+                                {% if data.gender == "Other" %}
+                                    <option value="Other" selected>Other</option>
+                                {% else %}
+                                    <option value="Other">Other</option>
+                                {% endif %}
+                            </select> 
+
+                        </div>
+                        <div class="flex">
+                            <label for="height">Height<sup>*</sup> in cm</label>
+                            <select name="height" id="">
+                                {% if data.height %}
+                                <option value="{{data.height}}">{{data.height}}</option>
+                                {% for i in h_choices %} 
+                                <option value="{{i.0}}">{{i.1}}</option>
+                                {% endfor %}
+                                {% else %}
+                                    {% for i in h_choices %} 
+                                        <option value="{{i.0}}">{{i.1}}</option>
+                                        {% endfor %}
+                                {% endif %}
+
+                                </select>
+
+                        </div>
+                        <div class="flex">
+                            <label for="occupation">Occupation</label>
+                            <input type="text" name="occupation" value="{{data.occupation}}">
+                        </div>
+                        <div class="flex">
+                            <label for="religion">Religion<sup>*</sup></label>
+                            <input type="text" name="religion" value="{{data.religion}}">
+                        </div>
+                        <div class="flex">
+                            <label for="complexion">Complexion</label>
+
+                            <select name="complexion" id="" style="width: 100%;">
+                            {% if data.complexion %}
+                                <option value="{{data.complexion}}">{{data.complexion}}</option>
+                                
+                            {% endif %}
+                                <option value="Dark">Dark</option>
+                                <option value="Fair">Fair</option>
+                                <option value="Very Fair">Very Fair</option>
+                                <option value="Wheatish">Wheatish</option>
+                             </select>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="personal-info">
+                    <h4>Address</h4>
+                    <div class="personal-info-adress flex1">
+
+                        <div class="flex">
+                            <label for="address">Address</label>
+                            <input type="text" name="address" value="{{data.address}}">
+                        </div>
+                        <div class="flex">
+                            <label for="city">City</label>
+                            <input type="text" name="city" value="{{data.city}}">
+                        </div>
+                        <div class="flex">
+                            <label for="state">State</label>
+                            <!-- {% comment %} <input type="text" name="state" value="{{data.state}}"> {% endcomment %} -->
+                            <select name="state" id="">
+                                {% if data.state %}
+                                <option value="{{data.state}}" hidden>{{data.state}}</option>
+                                {% for i in state_choices %} 
+                                        <option value="{{i.0}}">{{i.1}}</option>
+                                        {% endfor %}
+                                {% else %}
+                                    {% for i in state_choices %} 
+                                        <option value="{{i.0}}">{{i.1}}</option>
+                                        {% endfor %}
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="flex">
+                            <label for="country">Country</label>
+                            <input type="text" name="country" value="{{data.country}}">
+                        </div>
+                        <div class="flex">
+                            <label for="pcode">Pincode</label>
+                            <input type="number" name="pcode" value="{{data.pincode}}">
+                        </div>
+                    </div>
+
+                </div>
+                <div class="personal-info">
+                    <h4>About Disability</h4>
+                    <div class="personal-info-disability flex1">
+                        <div class="flex">
+                            <label for="disability-status">Disability Status</label>
+                            <select name="disability-status" id="disab_status" onchange=getDisabValue()>
+                            {% comment %} <select name="disability-status" id="" value="{{data.disability}}"> {% endcomment %}
+                            {% if data.disability == "No" %}
+                                <option value="No" selected>No</option>
+                            {% else%}
+                                    <option value="No">No</option>
+                            {% endif %}
+                            {% if data.disability == "Yes" %}
+                                    <option value="Yes" selected>Yes</option>
+                            {% else%}
+                                    <option value="Yes">Yes</option>
+                            {% endif%}
+                            </select>
+
+                        </div>
+                        <div class="flex" id="disab_type" style="display: none;">
+                            <label for="disability-type">Disability Type</label>
+                            <select name="disability-type"> 
+                                <!-- <option value="">Select</option> -->
+                                {% if data.disab_type %}
+                                <option value="{{data.disab_type}}" style="color: red;">{{data.disab_type}}</option>
+                                <option value="OH">OH</option>
+                                <option value="VH">VH</option>
+                                {% else %}
+                                <option value=" ">No</option>
+                                <option value="OH">OH</option>
+                                <option value="VH">VH</option>
+                                {% endif %}
+
+                            </select>
+                        </div>
+                        <div class="flex" id="disab_cent" style="display: none;">
+                            <label for="disab_cent">Disability Percentage</label>
+                            <!-- <input type="number" name="disab_cent"> -->
+                            <select name="disab_cent"> 
+                                {% if data.disab_percentage %}
+                                <option value="{{data.disab_percentage}}">{{data.disab_percentage}}</option>
+
+                                {% for i in range %}
+
+                                <option value="{{i}}">{{i}}</option>
+                                {% endfor %}
+                                {% else %}
+                                {% for i in range %}
+
+                                <option value="{{i}}">{{i}}</option>
+                                {% endfor %}
+                                {% endif %}
+
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                {% comment %} family details {% endcomment %}
+                <div class="personal-info">
+                    <h4>Family Details</h4>
+
+                     <table class="family_details_basic" >
+                    <tbody>
+                        <tr class="t_row">
+                            <td class="select_field">Father's Occupation</td>
+                            <td>:&nbsp<input type="text" value="{{data.f_occ}}" name="f_occ"></td>
+
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">Mother's Occupation</td>
+                            <td>:&nbsp<input type="text" value="{{data.m_occ}}" name="m_occ"></td>
+
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">No. of Brothers</td>
+                            <td>:&nbsp<input type="text" value="{{data.no_bros}}" name="no_bros"></td>
+
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">No. of Sisters</td>
+                            <td>:&nbsp<input type="text" value="{{data.no_sis}}" name="no_sis"></td>
+
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+                <!-- basic details -->
+
+
+                <div class="personal-info">
+                    <h4>Basic & lifestyle</h4>
+
+                     <table class="family_details_basic" >
+                        <tbody>
+                           
+                            <tr class="t_row">
+                                <td class="select_field">Marital Status<sup>*</sup></td>
+                                <td>:&nbsp<select type="text" name="marital_status">
+                                {% if data.marital_status %}
+                                    <option value="{{data.marital_status}}" hidden>{{data.marital_status}}</option>
+                                    
+
+                                {% endif %}
+                                    <option value="Not Specified">Not Specified</option>
+                                    <option value="Single">Single</option>
+                                    <option value="Married">Married</option>
+                                    <option value="Divorced">Divorced</option>
+                                    <option value="Widow">Widow</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr class="t_row">
+                                <td class="select_field">Body Type </td>
+                                <td>:&nbsp<select type="text" name="B_type">
+                                {% if data.B_type %}
+                                    <option value="{{data.B_type}}" hidden>{{data.B_type}}</option>
+
+                                {% endif %}
+                                    <option value="Not Specified">Not Specified</option>
+                                    <option value="Athlete">Athlete</option>
+                                    <option value="Average">Average</option>
+                                    <option value="Heavy">Heavy</option>
+                                    <option value="Slim">Slim</option>
+                                    </select>
+                                </td>
+
+                            </tr>
+                           
+                            
+                            
+                            <tr class="t_row">
+                                <td class="select_field">Profile Created by</td>
+                                <!-- <td><input type="text" value="" name="pro_created"></td> -->
+                                <td>:&nbsp<select name="pro_created" id="">
+                                {% if data.pro_created %}
+                                <option value="{{data.pro_created}}" hidden >{{data.pro_created}}</option>
+                                {% endif %}
+                                    {% for i in range3 %} 
+                                        <option value="{{i.0}}">{{i.1}}</option>
+                                        {% endfor %}
+                                </select></td>
+
+                            </tr>
+                            <tr class="t_row">
+                                <td class="select_field">Mother Tounge</td>
+                                <td>:&nbsp<input type="text" value="{{data.m_Tounge}}" name="m_Tounge"></td>
+
+                            </tr>
+                            <tr class="t_row">
+                                <td class="select_field">Drink</td>
+                                <td>:&nbsp<select type="text" name="drink">
+                                {% if data.drink %}
+                                <option value="{{data.drink}}" hidden>{{data.drink}}</option>
+
+                                {% endif %}
+                                    <option value="Not Specified">Not Specified</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                    </select>
+                                </td>
+
+                            </tr>
+                            <tr class="t_row">
+                                <td class="select_field">Smoke</td>
+                                <td>:&nbsp<select type="text" name="smoke">
+                                {% if data.smoke %}
+                                <option value="{{data.smoke}}" hidden>{{data.smoke}}</option>
+
+                                {% endif %}
+                                    <option value="Not Specified">Not Specified</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
+                                    </select>
+                                </td>
+
+                            </tr>
+                            <tr class="t_row">
+                                <td class="select_field">Weight in Kg</td>
+                                <td>:&nbsp<select name="weight" id="">
+                                {% if data.weight %}
+                                    <option value="{{data.weight}}" hidden>{{data.weight}}</option>
+                                {% endif %}
+
+                                    {% for i in range %}
+                                    <option value="{{i}}">{{i}}</option>
+                                    {% endfor%}
+                                </select>
+                                </td>
+
+                            </tr>
+                            <tr class="t_row">
+                               <td class="select_field">Blood Group</td>
+                                <!-- <td><input type="text" value="" name="pro_created"></td> -->
+                                <td>:&nbsp<select name="b_Group" id="">
+                                {% if data.b_Group %}
+                                <option value="" >{{data.b_Group}}</option>
+                                {% endif %}
+                                    {% for i in b_group %} 
+                                        <option value="{{i.0}}">{{i.1}}</option>
+                                        {% endfor %}
+                                </select></td>
+                            </tr>
+                            <tr class="t_row">
+                                <td class="select_field">Diet</td>
+                                <td>:&nbsp<select name="diet" id="">
+                                {% if data.diet %}
+                                <option value="{{data.diet}}">{{data.diet}}</option>
+
+                                {% endif %}
+                                    <option value="Vegetarian">Vegetarian</option>
+                                    <option value="Non-Vegetarian">Non-Vegetarian</option>
+                                </select></td>
+
+                            </tr>
+                        </tbody>
+                </table>
+                </div>
+
+
+                                 <!-- educational details -->
+
+
+                 <div class="personal-info">
+                    <h4>Educational Details</h4>
+
+                     <table class="family_details_basic" >
+                    <tbody>
+                        <tr class="t_row">
+                            <td class="select_field">Education</td>
+                            <td>:&nbsp<select name="education" id="">
+                                {% if data.education %}
+                                <option value="{{data.education}}" hidden>{{data.education}}</option>
+                                {% for i in edu_choices %}
+                                <option value="{{i.0}}">{{i.1}}</option>
+                                {% endfor %}
+                                {% else%}
+
+                                {% for i in edu_choices %}
+                                <option value="{{i.0}}">{{i.1}}</option>
+                                {% endfor %}
+                                {% endif%}
+                            </select>
+                                <!-- <input type="text" value="{{data.education}}" name="education"> -->
+                            
+                            
+                            </td>
+
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">Education Details</td>
+                            <td>:&nbsp<input type="text" value="{{data.education_detail}}" name="education_detail"></td>
+
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">Occupation Details</td>
+                            <td>:&nbsp<input type="text" value="{{data.occupation_detail}}" name="occupation_detail"></td>
+
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">Annual Income</td>
+                            <td>:&nbsp<input type="text" value="{{data.annual_income}}" name="annual_income"></td>
+
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">Current Location</td>
+                            <td>:&nbsp<input type="text" value="{{data.current_location}}" name="current_location"></td>
+
+                        </tr>
+                    </tbody>
+                </table>
+                </div>
+                <div class="personal-info">
+                
+                    <h4>Religious / Social & Astro Background</h4>
+
+                    <table class="profile_table">
+                        <tbody>
+                            {% comment %} <tr class="t_row">
+                                <td class="select_field">Time of Birth :</td>
+                                <td><input type="time"  name="birthtime"  value=""></td>
+
+                            </tr> {% endcomment %}
+                            <tr class="t_row">
+                                <td class="select_field">Caste</td>
+                                <td>:&nbsp<input type="text" value="{{data.caste}}" name="caste"></td>
+                            </tr>
+                            <tr class="t_row">
+                                <td class="select_field">Sub Caste</td>
+                                <td>:&nbsp<input type="text" value="{{data.s_caste}}" name="s_caste"></td>
+                            </tr>
+                            
+                            <tr class="t_row">
+                                <td class="select_field">Place of Birth</td>
+                                <td>:&nbsp<input type="text" value="{{data.pob}}" name="pob"></td>
+                            </tr>
+                            <tr class="t_row">
+                                <td class="select_field">Rashi</td>
+                                <td>:&nbsp<input type="text" value="{{data.rashi}}" name="rashi"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="personal-info-about flex flex1">
+                        <h4>About Me</h4>
+                        <textarea name="about" id="" placeholder="Enter here" cols="15" rows="10">{{data.about}}</textarea>
+                    </div>
+                    
+                </div>
+
+
+               
+                <div class="personal-info">
+                    <h4>Partner Preferene</h4>
+
+                   <table class="profile_table">
+                    <tbody>
+                        <tr class="t_row">
+                            <td class="select_field">Age Min</td>
+                            <td>:&nbsp<select name="p_age_min" id="">
+                            {% if data.p_age_min %}
+                                <option value="{{data.p_age_min}}">{{data.p_age_min}}</option>
+                            {% endif %}
+                                {% for i in range2 %}
+
+                                <option value="{{i}}">{{i}}</option>
+                                {% endfor %}
+                            </select></td>
+
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">Age Max </td>
+                            <td>:&nbsp<select name="p_age_max" id="">
+                              {% if data.p_age_max %}
+                                <option value="{{data.p_age_max}}">{{data.p_age_max}}</option>
+                            {% endif %}
+                                {% for i in range2 %}
+
+                                <option value="{{i}}">{{i}}</option>
+                                {% endfor %}
+                            </select></td>
+
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">Marital Status</td>
+                             <td>:&nbsp<select name="p_Marital_Status" id="">
+                             {% if data.p_Marital_Status %}{% endif %}
+                               <option value="Single">Single</option>
+                               <option value="Married">Married</option>
+                               <option value="Unmarried">Unmarried</option>
+                               <option value="Divorce">Divorce</option>
+                            </select></td>
+
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">Body Type</td>
+                            <td>:&nbsp<select name="p_Body_Type" id="">
+                                <option value="Athletic">Athletic</option>
+                                <option value="Average">Average</option>
+                                <option value="Heavy">Heavy</option>
+                                <option value="Slim">Slim</option>
+                             </select></td>
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">Complexion</td>
+                            <td>:&nbsp<select name="p_Complexion" id="" style="width: 60%;">
+                            {% if data.p_Complexion %}
+                                <option value="{{data.p_Complexion}}">{{data.p_Complexion}}</option>
+                                
+                            {% endif %}
+                                <option value="Dark">Dark</option>
+                                <option value="Fair">Fair</option>
+                                <option value="Very Fair">Very Fair</option>
+                                <option value="Wheatish">Wheatish</option>
+                             </select></td>
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">Height (in cm)</td>
+                            <td>:&nbsp<select name="p_Height" id="">
+                                {% if data.p_Height %}
+                                <option value="{{data.p_Height}}" >{{data.p_Height}}</option>
+                                {% endif %}
+                                    {% for i in h_choices %} 
+                                        <option value="{{i.0}}">{{i.1}}</option>
+                                        {% endfor %}
+                                </select></td>
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">Diet</td>
+                            <td>:&nbsp<select type="text" value="" name="p_Diet">
+                            {% if data.p_Diet %}
+                                <option value="{{data.p_Diet}}">{{data.p_Diet}}</option>
+
+                            {% endif %}
+                                <option value="Vegeterian">Vegeterian</option>
+                                <option value="Non-Vegeterian">Non-Vegeterian</option>
+                            </select>
+                            </td>
+
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">Kujadosham / Manglik</td>
+                            <td>:&nbsp<input type="text" value="{{data.p_Manglik}}" name="p_Manglik"></td>
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">Religion</td>
+                            <td>:&nbsp<input type="text" value="{{data.p_Religion}}" name="p_Religion"></td>
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">Caste</td>
+                            <td>:&nbsp<input type="text" value="{{data.p_Caste}}" name="p_Caste"></td>
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">Mother Tongue</td>
+                            <td>:&nbsp<input type="text" value="{{data.p_Mother_Tongue}}" name="p_Mother_Tongue"></td>
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">Education</td>
+                            <td>:&nbsp<input type="text" value="{{data.p_Education}}" name="p_Education"></td>
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">Occupation</td>
+                            <td>:&nbsp<input type="text" value="{{data.p_Occupation}}" name="p_Occupation"></td>
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">Country of Residence</td>
+                            <td>:&nbsp<input type="text" value="{{data.p_Country_Of_Residence}}" name="p_Country_Of_Residence"></td>
+                        </tr>
+                        <tr class="t_row">
+                            <td class="select_field">State</td>
+                            <td>:&nbsp<input type="text" value="{{data.p_State}}" name="p_State"></td>
+                        </tr>
+                        <!-- <tr class="t_row">
+                            <td class="select_field">Residency Status :</td>
+                            <td><input type="text" value=""></td>
+                        </tr> -->
+                    </tbody>
+                </table>
+                </div>
+
+                    <div class="personal-info-btn">
+                    <div class="personal-info-button">
+                        <button type="submit" class="pro-update-btn btn-update">Update</button>
+                        {% comment %} <button type="reset" class="pro-update-btn ">Cancel</button> {% endcomment %}
+                    </div>
+                </div>
+        </form>
+
+    {% comment %} </div> {% endcomment %}
+
+</div>
+        
+{% endblock first-container %}
+
+{% block second-container %}
+
+
+{% endblock second-container %} 
+    {% block third-container %}
+    
+    {% endblock third-container %}
+
+    {% comment %} {% block footer %}{% endblock footer %} {% endcomment %}
+
+
+{% block script %}
+        <script src="{% static 'js/ajax2.js' %}"></script>
+{% endblock script %}
